@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HOMEWORK-2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        html {
+        overflow-x: hidden;
+        }
+        /* general styles */
+        * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        }
+
+        .toggler {
+        background-color: red;
+        }
+
+        .active {
+        background-color: green;
+        }
+
+        .speed button {
+            width: 50px;
+            border-radius: 20%;
+            border: 3px solid black;
+            margin: 10px;
+            padding: 3px;
+            color: white;
+        }
+
+        button {
+            width: 100px;
+            border-radius: 15%;
+            border: 3px solid black;
+            background-color: brown;
+            margin: 10px;
+            padding: 5px;
+            color: white;
+        }
+
+        button[disabled]{
+            border: 1px solid #999999;
+            background-color: #cccccc;
+            color: #666666;
+        }
+
+        input[type="range"] {
+        accent-color: brown;
+        }
+
+        input[type="color"] {
+        border: 2px solid black;
+
+        }
+
+        
+      label {
+        font-size: 20px;
+        color: black;
+        font-weight: bolder;
+      }
+
+      span {
+        font-size: 23px;
+        color: black;
+      }
+
+        .title {
+        width: 100%;
+        height: 3vh;
+        padding-top: 30px;
+        }
+
+        .settings h1 {
+        padding-top: 20px;
+        }
+
+        .title h1 {
+        color: gray;
+        font-family: "Rouge Script", cursive;
+        font-size: 3vw;
+        font-weight: normal;
+        line-height: 48px;
+        padding-left: 50px;
+        text-shadow: 1px 1px 2px #082b34;
+        }
+
+        .container {
+            margin-top: 10vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .active {
+        background-color: green;
+        }
+
+        canvas {
+            padding: 0;
+            margin: auto;
+            display: block;
+            border: 5px solid brown;
+        }
+        .canvas {
+            padding: 0;
+            margin: auto;
+            display: block;
+            width: 800px;
+        }
+
+        .settings {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 900px) {
+            .container {
+                margin-top: 2vh;
+            flex-direction: column;
+
+            }
+
+            .title h1 {
+                display: none;
+            }
+
+            .canvas {
+                width: 100%;
+                height: 30%;
+                margin-bottom: 1vh;
+            }
+
+            .settings {
+            width: 100%;
+            height: 70%;
+            }
+        }
+
+        @media only screen and (max-width: 512px) {
+            canvas {
+                width: 100%;
+            }
+        }
+    </style>
+    </head>
+<div>
+    <div class="title">
+        <h1>Homework-2 by Andrea Panceri (1884749)</h1>
+    </div>
+    <div class="container">
+        <div class="canvas">
+            <canvas id="gl-canvas" width="560" height="560"> </canvas>
+        </div>
+        <div class="settings">
+            <h1>Camera Controls:</h1>
+            <div>
+                 <!-- Slider to change the zNear of camera-->
+                <label for="zNearSlider">zNear</label>
+                <span>1</span>
+                <input
+                  id="zNearSlider"
+                  type="range"
+                  min="1"
+                  max="120"
+                  step="1"
+                  value="1"
+                />
+                <span>120</span>
+              </div>
+               <!-- Slider to change the zFar of camera-->
+              <div>
+                <label for="zFarSlider">zFar</label>
+                <span>1</span>
+                <input
+                  id="zFarSlider"
+                  type="range"
+                  min="1"
+                  max="120"
+                  step="1"
+                  value="120"
+                />
+                <span>120</span>
+              </div>
+               <!-- Slider to change the radius of camera-->
+              <div>
+                <label for="radiusSlider">radius</label>
+                <span>1</span>
+                <input
+                  id="radiusSlider"
+                  type="range"
+                  min="1"
+                  max="80"
+                  step="1"
+                  value="38"
+                />
+                <span>80</span>
+              </div>
+               <!-- Slider to change the theta of camera-->
+              <div>
+                <label for="thetaSlider">theta</label>
+                <span>-90</span>
+                <input
+                  id="thetaSlider"
+                  type="range"
+                  min="-90"
+                  max="90"
+                  step="1"
+                  value="20"
+                />
+                <span>90</span>
+              </div>
+              <!-- Slider to change the phi of camera-->
+              <div>
+                <label for="phiSlider">phi</label>
+                <span>-180</span>
+                <input
+                  id="phiSlider"
+                  type="range"
+                  min="-180"
+                  max="180"
+                  step="1"
+                  value="-120"
+                />
+                <span>180</span>
+              </div>
+              <!-- Slider to change the fov of projection-->
+              <div>
+                <label for="fovSlider">fov</label>
+                <span>5</span>
+                <input
+                  id="fovSlider"
+                  type="range"
+                  min="5"
+                  max="100"
+                  step="1"
+                  value="35"
+                />
+                <span>100</span>
+              </div>
+              <!-- Slider to change the aspect of projection-->
+              <div>
+                <label for="aspectSlider">aspect</label>
+                <span>0.6</span>
+                <input
+                  id="aspectSlider"
+                  type="range"
+                  min="0.5"
+                  max="6"
+                  step="0.1"
+                  value="1"
+                />
+                <span>6</span>
+              </div>
+            <div class="animation">
+                <h1>Animation Controls:</h1>
+                <button id = "Play" class="toggler">Play</button>
+                <button id = "Reset" >Reset</button>
+            </div>
+            <div class="speed">
+                <button id = "speed0" class="toggler">0.5x</button>
+                <button id = "speed1" class="toggler active">1x</button>
+                <button id = "speed2" class="toggler">2x</button>
+                <button id = "speed3" class="toggler">3x</button>
+            </div>
+            <div class="MotionBlur">
+                <h1>Motion Blur:</h1>
+                <button id = "motionBlur" class="toggler">On  /  Off</button>
+                <div>
+                    <label for="MBslider">Motion Blur intensity</label>
+                    <span>1</span>
+                    <input
+                      id="MBslider"
+                      type="range"
+                      min="1"
+                      max="10"
+                      step="1"
+                      value="1"
+                    />
+                    <span>10</span>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<img id = "carpetTexture" src = "textureCarpet.jpg" hidden></img>
+<img id = "carpetNormal" src = "normalcarpet.png" hidden></img>
+<img id = "furNormal" src = "normalFur.png" hidden></img>
+<img id = "furTexture" src = "textureFur.jpg" hidden></img>
+<img id = "catFaceTexture" src = "textureFace.png" hidden></img>
+<img id = "woodTexture" src = "textureWood.jpg" hidden></img>
+<img id = "woodNormal" src = "normalWood.png" hidden></img>
+
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+
+in vec4 aPosition,aNormal,aTangent;
+in vec2 aTexCoord;
+
+out vec2 vTexCoord;
+out vec3 L, V, vertexResultNN;
+
+uniform mat4 uModelViewMatrix,uProjectionMatrix,uRotationMatrix;
+uniform mat3 uNormalMatrix;
+
+uniform vec4 uLightPosition;
+
+uniform bool uCarpetFlag, uCatFurFlag, uWoodFlag;
+
+void main()
+{
+    vec3 N;
+    vec3 T;
+    vec3 pos = (uModelViewMatrix*uRotationMatrix*aPosition).xyz;
+    vec3 light = (uModelViewMatrix*uLightPosition).xyz;
+
+    bool bumpTexture = uCatFurFlag || uCarpetFlag || uWoodFlag;
+
+    //Distinct case to do for bump texture and color textures (FACE)
+    if(bumpTexture){
+        N = normalize(uNormalMatrix * (uRotationMatrix * aNormal).xyz);
+        T = normalize(uNormalMatrix * (uRotationMatrix * aTangent).xyz);    
+    } else {
+        N = normalize((uModelViewMatrix * uRotationMatrix * aNormal).xyz);
+        T = normalize((uModelViewMatrix * uRotationMatrix * aTangent).xyz);
+        vertexResultNN = normalize((uModelViewMatrix * uRotationMatrix * aNormal).xyz);
+    }
+
+    vec3 B = cross(N, T);
+    V = normalize(-pos);
+
+    vec3 diff = light - pos;
+    if(bumpTexture){
+        L = normalize(vec3(dot(T, diff), dot(B, diff), dot(N, diff)));
+    } else {
+        L = normalize(diff);
+    }
+
+    gl_Position = uProjectionMatrix * uModelViewMatrix * uRotationMatrix * aPosition;
+
+    vTexCoord = aTexCoord;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+
+precision mediump float;
+
+in vec3 L, V, vertexResultNN;
+in vec2 vTexCoord;
+
+out vec4 fColor;
+
+uniform sampler2D uBumpMapCarpet,uBumpMapWood,uBumpMapFur;
+uniform sampler2D utextureCarpet,uTextureFace,utextureFur,uTextureWood; 
+
+uniform bool uCarpetFlag,uCatFurFlag,uCatFaceFlag,uWoodFlag, uMotionBlurFlag;
+
+uniform vec4 uAmbientProduct,uDiffuseProduct,uSpecularProduct;
+
+uniform float uShininess;
+uniform float motionBlurQuantity;
+
+void main()
+{
+
+    vec3 NN;
+    if(uCatFurFlag){
+        vec4 N = texture(uBumpMapFur, vTexCoord);
+        NN =  normalize(2.0*N.xyz-1.0);
+    } else if(uCarpetFlag){
+        vec4 N = texture(uBumpMapCarpet, vTexCoord);
+        NN =  normalize(2.0*N.xyz-1.0);
+    }  else if(uWoodFlag){
+        vec4 N = texture(uBumpMapWood, vTexCoord);
+        NN =  normalize(2.0*N.xyz-1.0);
+    } else {
+        NN = vertexResultNN;
+    }
+
+    vec4 ambient = uAmbientProduct;
+
+    vec3 H = normalize(L + V);
+
+    vec3 LL = normalize(L);
+    float Kd = max(dot(NN, LL), 0.0);
+    vec4 diffuse = Kd*uDiffuseProduct;
+
+    float Ks = pow(max(dot(NN, H), 0.0), uShininess);
+    vec4 specular = Ks * uSpecularProduct;
+    
+    if( dot(H, NN) < 0.0 ) {
+	specular = vec4(0.0, 0.0, 0.0, 1.0);
+    }
+
+    vec4 colorLightAmbient = (ambient + diffuse + specular);
+    if(uCatFurFlag) {
+        fColor =  colorLightAmbient * texture(utextureFur, vTexCoord);
+        if(uMotionBlurFlag) {
+            //Combines the RGB and alpha components of the sampled color to achieve proper alpha blending.
+            vec4 Texture_mb = fColor;
+            Texture_mb.a = motionBlurQuantity;
+            fColor = vec4(Texture_mb.rgb * Texture_mb.a, Texture_mb.a);
+        }
+    }else if(uCatFaceFlag) {
+        fColor =  colorLightAmbient * texture(uTextureFace, vTexCoord);
+        if(uMotionBlurFlag) {
+            //Combines the RGB and alpha components of the sampled color to achieve proper alpha blending.
+            vec4 Texture_mb = fColor;
+            Texture_mb.a = motionBlurQuantity;
+            fColor = vec4(Texture_mb.rgb * Texture_mb.a, Texture_mb.a);
+        }
+    }else if(uWoodFlag){
+        fColor =  colorLightAmbient * texture(uTextureWood, vTexCoord);
+    } else if(uCarpetFlag){
+        fColor =  colorLightAmbient * texture(utextureCarpet, vTexCoord);
+    } else {
+        fColor =  colorLightAmbient;
+    }
+    
+}
+</script>
+
+
+<script src="../Common/initShaders.js"></script>
+<script src="../Common/MVnew.js"></script>
+<script src="homework2.js"></script>
+
+</body>
+</html>
